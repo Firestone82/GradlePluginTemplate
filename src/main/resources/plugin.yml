@@ -1,0 +1,17 @@
+name: PluginName
+version: ${project.version}
+main: cz.devfire.pluginname.PluginCore
+load: POSTWORLD
+
+# Plugin information
+author: "Firestone82"
+api-version: 1.13
+
+# Other plugins depend
+softdepend: [ ]
+depend:
+  - "FireLibs"
+loadbefore: [ ]
+
+# Plugin commands
+commands: { }

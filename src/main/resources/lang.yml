@@ -1,0 +1,7 @@
+Command:
+  Usage: "&c&lSERVER &8&l» &7Usage: &e{0}"
+  PlayerOnly: "&c&lSERVER &8&l» &7This command can execute only player!"
+  NoPermissions: "&c&lSERVER &8&l» &7You don't have enough permissions!"
+  NoCommand: "&c&lSERVER &8&l» &7Unknown command. Use &e/pluginCommand help"
+
+Reloaded: "&c&lSERVER &8&l» &7Plugin was reloaded in &e{0}&7ms."
