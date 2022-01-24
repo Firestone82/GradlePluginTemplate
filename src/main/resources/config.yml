@@ -1,0 +1,10 @@
+# Used to see debug values. If you dont know why plugin is not working and
+# you know at least something about java and bukkit-api. Feel free to find that problem.
+Debug: false
+
+Database:
+  Host: localhost
+  User: root
+  Pass: SecretMysqlPassword
+  Port: 3306
+  DB: database

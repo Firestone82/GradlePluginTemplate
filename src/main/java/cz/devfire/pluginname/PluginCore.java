@@ -1,6 +1,10 @@
 package cz.devfire.pluginname;
 
 import cz.devfire.firelibs.Shared.Utils.StringUtils;
+import cz.devfire.firelibs.Spigot.Database.Objects.IDatabase;
+import cz.devfire.firelibs.Spigot.Database.Types.DatabaseMysql;
+import cz.devfire.pluginname.Commands.CoreCommand;
+import cz.devfire.pluginname.Placeholders.CorePlaceholder;
 import cz.devfire.pluginname.Util.Files.Config;
 import cz.devfire.pluginname.Util.Files.Language;
 import org.bukkit.Bukkit;
@@ -14,6 +18,10 @@ public final class PluginCore extends JavaPlugin {
 
     private Config config;
     private Language language;
+
+    private CoreCommand coreCommand;
+    private CorePlaceholder corePlaceholder;
+    private IDatabase coreDatabase;
 
     private boolean debug = false;
 
@@ -42,11 +50,38 @@ public final class PluginCore extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("§a - Debug mode is §cdisabled§a!");
         }
 
+        coreCommand = new CoreCommand(this);
+
+        if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            corePlaceholder = new CorePlaceholder(this);
+        }
+
+        coreDatabase = new DatabaseMysql(plugin,
+                plugin.getConfig().getString("Database.DB"),
+                plugin.getConfig().getString("Database.Host"),
+                plugin.getConfig().getString("Database.User"),
+                plugin.getConfig().getString("Database.Pass"),
+                plugin.getConfig().getInt("Database.Port",3306));
+        if (coreDatabase.connect()) {
+            Bukkit.getConsoleSender().sendMessage("§a - Connecting database "+ coreDatabase.getHost() +"... §eSuccessful!");
+        } else {
+            Bukkit.getConsoleSender().sendMessage("§a - Connecting database "+ coreDatabase.getHost() +"... §eFailed!");
+            Bukkit.getConsoleSender().sendMessage("§c - Plugin cant work without database!");
+            Bukkit.getConsoleSender().sendMessage("§c - Shutting down plugin!");
+            this.onDisable();
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         getLogger().info("Enabled plugin with version "+ getDescription().getVersion() +" by "+ StringUtils.stripBrackets(getDescription().getAuthors().toString()));
     }
 
     @Override
     public void onDisable() {
+        if (coreCommand != null) coreCommand.unregister();
+        if (corePlaceholder != null) corePlaceholder.unregister();
+        if (coreDatabase != null) coreDatabase.disconnect();
+
         getLogger().info("Disabled plugin with version "+ getDescription().getVersion() +" by "+ StringUtils.stripBrackets(getDescription().getAuthors().toString()));
     }
 
@@ -87,5 +122,9 @@ public final class PluginCore extends JavaPlugin {
 
     public Language getLanguage() {
         return language;
+    }
+
+    public IDatabase getDatabase() {
+        return coreDatabase;
     }
 }

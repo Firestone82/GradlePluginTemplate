@@ -53,7 +53,10 @@ dependencies {
     compileOnly 'net.minecraft:server:1.17.1'
 
     // Libs
-    compileOnly 'cz.devfire:firelibs:2.1.3'
+    compileOnly 'cz.devfire:firelibs:2.1.7'
+
+    // Addons
+    compileOnly "me.clip:placeholderapi:2.10.9"
 }
 
 jar {

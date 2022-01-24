@@ -8,7 +8,8 @@ author: "Firestone82"
 api-version: 1.13
 
 # Other plugins depend
-softdepend: [ ]
+softdepend:
+  - "PlaceholderAPI"
 depend:
   - "FireLibs"
 loadbefore: [ ]
